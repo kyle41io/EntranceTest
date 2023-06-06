@@ -1,8 +1,12 @@
+"use client"
 import Footer from './components/Footer'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const inter = Inter({ subsets: ['latin'] })
+// const  queryClient = new QueryClient()
 
 export const metadata = {
   title: 'KPIM Entrance Test',
@@ -14,15 +18,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const  queryClient = new QueryClient()
   return (
-    
-    <html lang="en" className='bg-[#f5f5f5] overflow-x-hidden'>
-      
-      <body className={inter.className}>
+    <QueryClientProvider client={queryClient}>
+      {/* <ReactQueryDevtools /> */}
+      <html lang="en" className='bg-light overflow-x-hidden'>
         
+        <body className={inter.className}>
         {children}
         <Footer />
-      </body>
-    </html>
+        <ReactQueryDevtools />
+        
+        </body>
+
+      </html>
+    </QueryClientProvider>
   )
 }
