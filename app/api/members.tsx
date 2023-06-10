@@ -3,23 +3,23 @@ import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios'
 
 type NewMember = {
-  memberName: string
+  firstName: string
+  lastName: string
   email: string
   password: string
+  confirmPassword: string
   dateOfBirth: Date
-  phone: string
   avatar: string
-  status: string
+  status: number
 }
 
-export const useCreateMember = () => {
+export const createMember = () => {
   const queryClient = useQueryClient()
 
   return useMutation(
     (newMember: NewMember) =>
-      axios.post('http://localhost:5000/api/members', {
+      axios.post('http://localhost:5433/api/Accounts/AddMember', {
         ...newMember,
-        memberId: 0, // This will be ignored by the server and a new ID will be generated
         signUpDate: new Date(),
         testAmount: 0
       }),
@@ -29,4 +29,10 @@ export const useCreateMember = () => {
       }
     }
   )
+}
+
+export function getMembers() {
+  return  axios
+  .get("https://localhost:5433/api/TestLists")
+  .then(res => res.data)
 }

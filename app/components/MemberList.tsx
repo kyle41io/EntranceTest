@@ -1,3 +1,6 @@
+import { useQuery } from "@tanstack/react-query"
+import { getMembers } from "../api/members"
+
 const people = [
   {
     name: 'Lindsay Walton',
@@ -30,7 +33,17 @@ const people = [
 ]
 
 export default function MemberList() {
+  const membersQuery = useQuery({
+      queryKey: ["members"],
+      queryFn:getMembers,
+    })
+    
+    if(membersQuery.status === "loading"){return <h1 className='w-full h-screen'>Loading...</h1>}
+    if(membersQuery.status === "error"){return <h1 className='w-full h-screen'>{JSON.stringify(membersQuery.error)}</h1>}
+  
   return (
+    
+
     <div className="px-4 mt-4 sm:px-6 lg:px-8 min-h-screen bg-white mx-20">
       <div className="sm:flex sm:items-center ">
         <div className="sm:flex-auto">

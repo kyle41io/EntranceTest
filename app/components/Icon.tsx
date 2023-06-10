@@ -208,6 +208,26 @@ export const RightIcon: React.FC<IconProps> = ({className, ...rest}) => (
 )
 
 
+export const EditIcon: React.FC<IconProps> = ({className, ...rest}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={44}
+    height={44}
+    fill="none"
+    stroke="#00abfb"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={1.5}
+    viewBox="0 0 24 24"
+    {...rest}
+    className={`w-full h-auto ${className}`}
+  >
+    <path stroke="none" d="M0 0h24v24H0z" />
+    <path d="M4 20h4L18.5 9.5a1.5 1.5 0 0 0-4-4L4 16v4M13.5 6.5l4 4" />
+  </svg>
+)
+
+
 
 
 

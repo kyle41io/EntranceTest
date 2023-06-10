@@ -1,17 +1,17 @@
 "use client"
 import React, { useState } from 'react'
 import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid';
+
 
 export default function AddMember() {
     const [open, setOpen] = useState(false);
     const [member, setMember] = useState({
-        memberId: '',
-        memberName: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
+        confirmPassword: '',
         dateOfBirth: '',
-        phone: '',
         avatar: '',
         status: ''
     });
@@ -25,11 +25,11 @@ export default function AddMember() {
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        const memberId = uuidv4();
+      
         const signUpDate = new Date();
         const testAmount = 0;
-        const newMember = { ...member, memberId, signUpDate, testAmount };
-        await axios.post('http://localhost:5000/api/members', newMember);
+        const newMember = { ...member, signUpDate, testAmount };
+        await axios.post('http://localhost:5433/api/Accounts/SignUp', newMember);
         setOpen(false);
     }
 
@@ -47,8 +47,12 @@ export default function AddMember() {
                             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Member Name:</label>
-                                        <input type="text" name="memberName" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">First Name:</label>
+                                        <input type="text" name="firstName" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Last Name:</label>
+                                        <input type="text" name="lastName" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2">Email:</label>
@@ -59,12 +63,12 @@ export default function AddMember() {
                                         <input type="password" name="password" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Date of Birth:</label>
-                                        <input type="date" name="dateOfBirth" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password:</label>
+                                        <input type="password" name="confirmPassword" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Phone:</label>
-                                        <input type="text" name="phone" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Date of Birth:</label>
+                                        <input type="date" name="dateOfBirth" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2">Avatar:</label>

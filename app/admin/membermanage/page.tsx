@@ -1,4 +1,4 @@
-
+"use client"
 import AddMember from '@/app/components/AddMember'
 
 import MemberList from '@/app/components/MemberList'
