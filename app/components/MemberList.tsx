@@ -12,19 +12,19 @@ const people = [
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
   {
-    name: 'Lindsay Walton',
+    name: 'Lindsay Walton 1',
     title: 'DE Intern',
     department: 'KPIM',
-    email: 'lindsay.walton@example.com',
+    email: 'lindsay.walton@example1.com',
     role: '4',
     image:
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
   {
-    name: 'Lindsay Walton',
+    name: 'Lindsay Walton 2',
     title: 'MA Intern',
     department: 'KPIM',
-    email: 'lindsay.walton@example.com',
+    email: 'lindsay.walton@example2.com',
     role: '1',
     image:
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -33,18 +33,18 @@ const people = [
 ]
 
 export default function MemberList() {
-  const membersQuery = useQuery({
-      queryKey: ["members"],
-      queryFn:getMembers,
-    })
+  // const membersQuery = useQuery({
+  //     queryKey: ["members"],
+  //     queryFn:getMembers,
+  //   })
     
-    if(membersQuery.status === "loading"){return <h1 className='w-full h-screen'>Loading...</h1>}
-    if(membersQuery.status === "error"){return <h1 className='w-full h-screen'>{JSON.stringify(membersQuery.error)}</h1>}
+    // if(membersQuery.status === "loading"){return <h1 className='w-full h-screen'>Loading...</h1>}
+    // if(membersQuery.status === "error"){return <h1 className='w-full h-screen'>{JSON.stringify(membersQuery.error)}</h1>}
   
   return (
     
 
-    <div className="px-4 mt-4 sm:px-6 lg:px-8 min-h-screen bg-white mx-20">
+    <div className="px-4 mt-4 sm:px-6 lg:px-8 min-h-[300px] bg-white mx-60">
       <div className="sm:flex sm:items-center ">
         <div className="sm:flex-auto">
           {/* <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>

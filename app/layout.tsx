@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools /> */}
-      <html lang="en" className='bg-light overflow-x-hidden'>
+      <html lang="en" className='bg-light overflow-x-hidden '>
         
         <body className={inter.className}>
         {children}

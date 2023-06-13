@@ -24,6 +24,7 @@ export default function AdminHome() {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(false);
   const [editingTestId, setEditingTestId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const testsQuery = useQuery({
       queryKey: ["tests"],
@@ -61,15 +62,12 @@ export default function AdminHome() {
   const handleEdit = (test: any) => {
     setEditingTestId(test.testId);
     setEditTest({
-      testId: test.testId,
-      testName: test.testName,
-      questionAmount: test.questionAmount,
-      testTime: test.testTime,
-      testDesc: test.testDesc
+      ...test
     });
-    setState(true);
+    setIsEditing(true);
     testsQuery.refetch();
   };
+  
   
 
   const updateTest = async () => {
@@ -82,11 +80,27 @@ export default function AdminHome() {
       console.log(err);
     }
   };
-  const handleUpdate = () => {
-    updateTest();
-    setState(false);
-    testsQuery.refetch();
+  const handleUpdate = async () => {
+    try {
+      await updateTest();
+      resetEditingState();
+      testsQuery.refetch();
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  function resetEditingState() {
+    setIsEditing(false);
+    setEditingTestId(null);
+    setEditTest({
+      testId: 0,
+      testName: '',
+      questionAmount: '',
+      testTime: '',
+      testDesc: ''
+    });
+  }
   
   // const testUpdateQuery = useQuery({
   //   queryKey: ["tests"],
@@ -107,36 +121,38 @@ export default function AdminHome() {
     <main>
       <AddTest />
 
-      <div className=" w-full min-h-screen grid grid-cols-12 gap-24 px-32 my-20">
+      <div className=" w-full min-h-screen grid grid-cols-12 gap-24 px-60 my-12">
       {testsQuery.data.map((test: any) => (
         <div key={test.testId} className="overflow-hidden flex flex-col h-60 col-span-4 bg-gray-300 rounded-3xl">
-          <div className="" onClick={() => handleEdit(test)}><EditIcon className="ml-4 mt-1 !w-8 !h-8"  /></div>
+          <div className="" onClick={() => handleEdit(test)}><EditIcon className="ml-4 mt-0.5 !w-8 !h-8"  /></div>
           {editingTestId === test.testId ? (
             <div className="flex flex-col items-center text-center w-full">
               <input type="text" name="testName" value={editTest.testName} onChange={handleChange} />
               <input type="text" name="questionAmount" value={editTest.questionAmount} onChange={handleChange} />
               <input type="text" name="testTime" value={editTest.testTime} onChange={handleChange} />
               <input type="text" name="testDesc" value={editTest.testDesc} onChange={handleChange} />
-              <div className=" text-light font-semibold text-lg w-full">
-                <button className="bg-blue-700 py-1 w-1/2" onClick={handleUpdate}>
-                  Thay đổi
-                </button>
-                <button className="bg-red-600 py-1 w-1/2" onClick={() => setState(false)}>
-                  Hủy
-                </button>
-              </div>
+              {isEditing && (
+                <div className=" text-light font-semibold text-lg w-full">
+                  <button className="bg-blue-500 hover:bg-blue-700 py-1 w-1/2" onClick={handleUpdate}>
+                    Thay đổi
+                  </button>
+                  <button className="bg-red-500 hover:bg-red-700 py-1 w-1/2" onClick={resetEditingState}>
+                    Hủy
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
-            <div className="flex flex-col items-center text-center w-full">
-              <h2 className="text-2xl font-bold text-gray-800 my-2">{test.testName}</h2>
+            <div className="flex flex-col items-center text-center justify-between w-full h-full">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">{test.testName}</h2>
               <h3 className="mr-2">Số câu hỏi: {test.questionAmount} câu</h3>
-              <h3 className="mb-4">Thời gian: {test.testTime}</h3>
-              <p>{test.testDesc}</p>
-              <div className="mt-8 text-light font-semibold text-lg w-full">
-                <button className="bg-blue-700 py-1 w-1/2">
-                  <Link href={`/admin/test/${test.testId}`}>Chi tiết</Link>
+              <h3 className="mb-0.5">Thời gian: {test.testTime}</h3>
+              <p className='mx-2'>{test.testDesc}</p>
+              <div className="text-light font-semibold text-lg w-full">
+                <button className="bg-blue-500 hover:bg-blue-700 py-1.5 w-1/2">
+                  <Link href={`/admin/test#${test.testId}`}>Chi tiết</Link>
                 </button>
-                <button className="bg-red-600 py-1 w-1/2" onClick={() => setOpen(true)}>
+                <button className="bg-red-500 hover:bg-red-700 py-1.5 w-1/2" onClick={() => setOpen(true)}>
                   Xóa
                 </button>
               </div>
@@ -149,19 +165,20 @@ export default function AdminHome() {
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                   <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <h2 className="text-center">Bạn có muốn xóa bài test này</h2>
-                    <button
+                    <h2 className="text-center text-xl">Bạn có muốn xóa bài test này</h2>
+                    <div className="flex text-light font-semibold mt-2">
+                      <button
                       onClick={() => handleDelete(test.testId)}
-                      className="bg-red-600 py-1 w-1/2 mx-4 my-4"
+                      className="bg-red-500 hover:bg-red-700 py-1 w-1/2 mx-4 my-4 rounded-md"
                     >
                       Xóa
                     </button>
                     <button
                       onClick={() => setOpen(false)}
-                      className="bg-gray-700 py-1 w-1/2 mx-4 my-4"
+                      className="bg-blue-500 hover:bg-blue-700 py-1 w-1/2 mx-4 my-4 rounded-md"
                     >
                       Hủy
-                    </button>
+                    </button></div>
                   </div>
                 </div>
               </div>

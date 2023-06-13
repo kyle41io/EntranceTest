@@ -13,26 +13,20 @@ type NewMember = {
   status: number
 }
 
-export const createMember = () => {
-  const queryClient = useQueryClient()
 
-  return useMutation(
-    (newMember: NewMember) =>
-      axios.post('http://localhost:5433/api/Accounts/AddMember', {
+export function createMember(newMember: NewMember){
+  return axios
+      .post('https://localhost:5433/api/Accounts/AddMember', {
         ...newMember,
-        signUpDate: new Date(),
+        signUpDate: Date.now(),
         testAmount: 0
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('members')
-      }
-    }
-  )
+      })
+      .then (res => res.data)
 }
+
 
 export function getMembers() {
   return  axios
-  .get("https://localhost:5433/api/TestLists")
+  .get("https://localhost:5433/api/Accounta/Addmembers")
   .then(res => res.data)
 }

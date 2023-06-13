@@ -3,10 +3,6 @@ import { useMutation, useQuery  } from '@tanstack/react-query'
 import { createTest, deleteTest, getTests } from '../api/tests'
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 
-
-
-
-
 const AddTest = () => {
   const [open, setOpen] = useState(false);
   const testNameRef = useRef<HTMLInputElement>(null);
@@ -44,7 +40,7 @@ const AddTest = () => {
   return (
     <div className='container mx-auto flex items-end justify-end ml-10' >
       {status === "error" && JSON.stringify(error)}
-      <button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-24" onClick={() => setOpen(true)}>
+      <button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-12 mr-32" onClick={() => setOpen(true)}>
                 Thêm bài test
       </button>
       {open &&(
