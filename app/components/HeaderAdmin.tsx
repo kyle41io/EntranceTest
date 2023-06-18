@@ -37,7 +37,7 @@ export default function HeaderAdmin() {
                       Quản lý Test
                     </a>
                     <a
-                      href="/admin/membermanage"
+                      href="/admin/usermanage"
                       className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     >
                       Thành viên

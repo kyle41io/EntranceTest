@@ -67,14 +67,12 @@ export default function AdminHome() {
     setIsEditing(true);
     testsQuery.refetch();
   };
-  
-  
 
   const updateTest = async () => {
     try {
       testsQuery.refetch();
 
-      const res = await axios.put(`https://localhost:5433/api/TestLists/${editTest.testId}`, editTest);
+      const res = await axios.put(`https://localhost:5433/Tests/${editTest.testId}`, editTest);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -121,7 +119,7 @@ export default function AdminHome() {
     <main>
       <AddTest />
 
-      <div className=" w-full min-h-screen grid grid-cols-12 gap-24 px-60 my-12">
+      <div className=" w-full min-h-screen grid grid-cols-12 gap-24 px-40 my-12">
       {testsQuery.data.map((test: any) => (
         <div key={test.testId} className="overflow-hidden flex flex-col h-60 col-span-4 bg-gray-300 rounded-3xl">
           <div className="" onClick={() => handleEdit(test)}><EditIcon className="ml-4 mt-0.5 !w-8 !h-8"  /></div>
@@ -150,7 +148,7 @@ export default function AdminHome() {
               <p className='mx-2'>{test.testDesc}</p>
               <div className="text-light font-semibold text-lg w-full">
                 <button className="bg-blue-500 hover:bg-blue-700 py-1.5 w-1/2">
-                  <Link href={`/admin/test#${test.testId}`}>Chi tiết</Link>
+                  <Link href={`/admin/test/${test.testId}`}><a>Chi tiết</a> </Link>
                 </button>
                 <button className="bg-red-500 hover:bg-red-700 py-1.5 w-1/2" onClick={() => setOpen(true)}>
                   Xóa

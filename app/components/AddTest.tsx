@@ -40,7 +40,7 @@ const AddTest = () => {
   return (
     <div className='container mx-auto flex items-end justify-end ml-10' >
       {status === "error" && JSON.stringify(error)}
-      <button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-12 mr-32" onClick={() => setOpen(true)}>
+      <button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-12 mr-48" onClick={() => setOpen(true)}>
                 Thêm bài test
       </button>
       {open &&(

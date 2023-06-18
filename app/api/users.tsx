@@ -1,8 +1,8 @@
-// useCreateMember.ts
+// useCreateUser.ts
 import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios'
 
-type NewMember = {
+type NewUser = {
   firstName: string
   lastName: string
   email: string
@@ -14,10 +14,10 @@ type NewMember = {
 }
 
 
-export function createMember(newMember: NewMember){
+export function createUser(newUser: NewUser){
   return axios
-      .post('https://localhost:5433/api/Accounts/AddMember', {
-        ...newMember,
+      .post('https://localhost:5433/api/Accounts/AddUser', {
+        ...newUser,
         signUpDate: Date.now(),
         testAmount: 0
       })
@@ -25,8 +25,8 @@ export function createMember(newMember: NewMember){
 }
 
 
-export function getMembers() {
+export function getUsers() {
   return  axios
-  .get("https://localhost:5433/api/Accounta/Addmembers")
+  .get("https://localhost:5433/api/Accounts")
   .then(res => res.data)
 }

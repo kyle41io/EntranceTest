@@ -1,11 +1,11 @@
 "use client"
 import React, { useState, useRef, FormEvent } from 'react'
 import { useMutation, useQuery  } from '@tanstack/react-query'
-import { createMember, getMembers} from '../api/members'
+import { createUser, getUsers} from '../api/users'
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 
 
-export default function AddMember() {
+export default function AddUser() {
     const [open, setOpen] = useState(false);
     
     const firstNameRef = useRef<HTMLInputElement>(null);
@@ -13,6 +13,7 @@ export default function AddMember() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
+    const phoneNumberRef = useRef<HTMLInputElement>(null);
     const dateOfBirthRef = useRef<HTMLInputElement>(null);
     const avatarRef = useRef<HTMLInputElement>(null);
     const statusRef = useRef<HTMLInputElement>(null);
@@ -21,16 +22,15 @@ export default function AddMember() {
     
     const queryClient = useQueryClient()
     const [isCreate, setIsCreate] = useState(false);
-    // const membersQuery = useQuery({
-    //   queryKey: ["members"],
-    //   queryFn:getMembers,
+    // const UsersQuery = useQuery({
+    //   queryKey: ["Users"],
+    //   queryFn:getUsers,
     // })
-    
-  
+
     const {status ,error, mutate, } = useMutation({
-      mutationFn: createMember,
-      onSuccess: newMember => {
-        queryClient.setQueryData(["members"], newMember);
+      mutationFn: createUser,
+      onSuccess: newUser => {
+        queryClient.setQueryData(["Users"], newUser);
         queryClient.fetchQuery
       },
     });
@@ -46,6 +46,7 @@ export default function AddMember() {
         email: emailRef.current!.value,
         password: passwordRef.current!.value,
         confirmPassword: confirmPasswordRef.current!.value,
+        phoneNumber: phoneNumberRef.current!.value,
         dateOfBirth: dateOfBirthRef.current!.value,
         avatar: avatarRef.current!.value,
         status: Number(statusRef.current!.value),
@@ -57,7 +58,7 @@ export default function AddMember() {
 
     return (
         <div className="container mx-auto flex items-end justify-end ml-10">
-            <button className="mr-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-8" onClick={() => setOpen(true)}>
+            <button className="mr-48 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-8" onClick={() => setOpen(true)}>
                 Thêm thành viên
             </button>
             {open && (
@@ -69,11 +70,11 @@ export default function AddMember() {
                             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">First Name:</label>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Tên:</label>
                                         <input type="text" name="firstName"  ref={firstNameRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Last Name:</label>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Họ:</label>
                                         <input type="text" name="lastName"  ref={lastNameRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
@@ -81,15 +82,19 @@ export default function AddMember() {
                                         <input type="email" name="email"  ref={emailRef}className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Mật khẩu:</label>
                                         <input type="password" name="password"  ref={passwordRef}className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password:</label>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu:</label>
                                         <input type="password" name="confirmPassword"  ref={confirmPasswordRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Date of Birth:</label>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Số diện thoại:</label>
+                                        <input type="text" name="phoneNumber"  ref={phoneNumberRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Ngày sinh:</label>
                                         <input type="date" name="dateOfBirth"  ref={dateOfBirthRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
@@ -97,7 +102,7 @@ export default function AddMember() {
                                         <input type="text" name="avatar"  ref={avatarRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">Status:</label>
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Role:</label>
                                         <input type="text" name="status"  ref={statusRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Thêm</button>
