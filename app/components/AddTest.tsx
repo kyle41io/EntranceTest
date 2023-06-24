@@ -14,7 +14,6 @@ const AddTest = () => {
     queryFn:getTests,
   })
   
-
   const {status ,error, mutate, } = useMutation({
     mutationFn: createTest,
     onSuccess: newTest => {
@@ -22,8 +21,6 @@ const AddTest = () => {
       testsQuery.refetch();
     },
   });
-  
-  // console.log("error",error)
   
 
   function handleSubmit(e: FormEvent) {
@@ -33,8 +30,7 @@ const AddTest = () => {
       testDesc: testDescRef.current!.value,
 
     })
-      setOpen(false);
-      
+      setOpen(false);     
     }
 
   return (

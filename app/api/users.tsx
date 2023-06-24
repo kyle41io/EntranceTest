@@ -26,7 +26,12 @@ export function createUser(newUser: NewUser){
 
 
 export function getUsers() {
-  return  axios
+  return axios
   .get("https://localhost:5433/api/Accounts")
   .then(res => res.data)
+}
+
+export function signIn(){
+  return axios
+  .post("https://localhost:5433/api/Accounts/SignIn")
 }

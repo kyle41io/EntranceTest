@@ -17,8 +17,6 @@ export default function AddUser() {
     const dateOfBirthRef = useRef<HTMLInputElement>(null);
     const avatarRef = useRef<HTMLInputElement>(null);
     const statusRef = useRef<HTMLInputElement>(null);
-
-
     
     const queryClient = useQueryClient()
     const [isCreate, setIsCreate] = useState(false);

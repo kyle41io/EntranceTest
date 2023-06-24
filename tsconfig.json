@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/member", "app/admin/page.tsx", "app/api/tests.tsx", "app/components/AddTest.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/member", "app/admin/page.tsx", "app/api/tests.tsx", "app/components/AddTest.tsx", "app/components/PageButton.jsx"],
   "exclude": ["node_modules"]
 }

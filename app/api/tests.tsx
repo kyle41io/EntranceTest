@@ -17,7 +17,7 @@ export function createTest({ testName, testDesc }: { testName: string; testDesc:
       testId: randomUUID,
       testName,
       questionAmount: 0,
-      testTime: "00:05:00",
+      testTime: "00:05:00", 
       testDesc
     })
     .then (res => res.data)

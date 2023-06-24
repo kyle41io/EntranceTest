@@ -1,6 +1,6 @@
 "use client"
 import Test from '@/app/components/Test'
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode, Key } from 'react';
 import axios from 'axios';
 import React from 'react'
 import Logo from '../../../../public/img/logo.png'
@@ -8,12 +8,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ProfilePic from '../../../../public/img/1389952697.png'
 import { useQuery } from '@tanstack/react-query'
-import { getTestById } from '../api/tests';
+import { getTestById } from '../api/tests'
 import { useParams, useSearchParams } from 'next/navigation'
-import { getQuestions, getQuestionsPaginated } from '@/app/api/questions';
+import { getQuestions, getQuestionsPage, getQuestionsPaginated } from '@/app/api/questions';
 import { LeftIcon, RightIcon } from '@/app/components/Icon';
+import PageButton from '@/app/components/PageButton';
 
 type Question = {
+  questionId: Key | null | undefined;
   answer4: ReactNode;
   answer3: ReactNode;
   answer2: ReactNode;
@@ -27,7 +29,7 @@ type Question = {
 };
 export default function TestPage() {
   const params = useSearchParams()
-  const page = parseInt(params.get("page")!)||1;
+  //const page = parseInt(params.get("page")!)||1;
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   //const [page, setPage] = useState(1)
@@ -36,37 +38,53 @@ export default function TestPage() {
     queryKey: ['test', param.testId],
     queryFn: () => getTestById(param.testId),
   });
-  // const questionsQuery = useQuery({
-  //   queryKey: ["questions"],
-  //   queryFn:getQuestions,
+  
+  // const { status, error, data, isPreviousData } = useQuery({
+  //   queryKey: ["questions", { page }],
+  //   keepPreviousData: true,
+  //   queryFn: () => getQuestionsPaginated(page),
   // })
-  //const { question } = props;
-  const { status, error, data, isPreviousData } = useQuery({
-    queryKey: ["questions", { page }],
-    keepPreviousData: true,
-    queryFn: () => getQuestionsPaginated(page),
-  })
+
+  const [page, setPage] = useState(1)
+
+    const {
+        isLoading,
+        isError,
+        error,
+        data: questions,
+        isFetching,
+        isPreviousData,
+    } = useQuery(['questions', page], () => getQuestionsPage(page), {
+        keepPreviousData: true
+    })
 
   
-  const goToPreviousQuestion = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
-  };
-
-  const goToNextQuestion = () => {
-    if (currentQuestion < data?.questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    }
-  };
-  
-  // useEffect(() => {
-  //   console.log(param.testId)
-  
-  //   return () => {
-      
+  // const goToPreviousQuestion = () => {
+  //   if (currentQuestion > 0) {
+  //     setCurrentQuestion(currentQuestion - 1);
   //   }
-  // }, [])
+  // };
+
+  // const goToNextQuestion = () => {
+  //   if (currentQuestion < data?.questions.length - 1) {
+  //     setCurrentQuestion(currentQuestion + 1);
+  //   }
+  // };
+    const lastPage = () => setPage(questions.total_pages)
+
+    const firstPage = () => setPage(1)
+
+    const pagesArray = Array(questions?.total_pages).fill().map((_, index) => index + 1)
+    const nav = (
+      <nav className="mt-6">
+          {/* <button onClick={firstPage} disabled={isPreviousData || page === 1}>&lt;&lt;</button> */}
+          {/* Removed isPreviousData from PageButton to keep button focus color instead */}
+          {pagesArray.map(pg => <PageButton key={pg} pg={pg} setPage={setPage} />)}
+          {/* <button onClick={lastPage} disabled={isPreviousData || page === questions?.total_pages}>&gt;&gt;</button> */}
+      </nav>
+    )
+  
+  
   
   return (
     <main className=" w-full min-h-screen">
@@ -87,30 +105,19 @@ export default function TestPage() {
       <div className="grid grid-cols-6 gap-8 h-[500px] w-[80%] ">
         <div className="flex flex-col items-center col-span-2 bg-gray-300 shadow-lg rounded-xl ">
           <div className="flex justify-center items-center bg-blue-800/80 text-white h-[40px] w-[200px] rounded-xl text-xl mt-6">Danh sách câu hỏi</div>
-          <div className="w-[70%] grid grid-cols-12 gap-4 mt-10">
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-            <div className="bg-blue-700 col-span-3 h-14 w-12 rounded-md shadow-lg"></div>
-          </div>
+          {nav}
         </div>
         <div className="flex flex-col items-center col-span-4 bg-gray-300 shadow-lg rounded-xl">
           <div className="flex justify-center items-center bg-blue-800/80 text-white h-[40px] w-[120px] rounded-xl text-xl mt-6">Câu {currentQuestion + 1}</div>
           <small>{isPreviousData && "Previous Data"}</small>
 
           <div className="flex justify-between items-center h-[400px] w-full">
-            <div onClick={goToPreviousQuestion} className=""><LeftIcon className='!w-8 text-blue-900' /></div>
-            {data?.questions &&
-              data.questions
+            <div  className=""><LeftIcon className='!w-8 text-blue-900' /></div>
+            {questions?.data &&
+              questions?.data
                 .filter((question: Question) => question.testId == param.testId)
                 .map((question: Question) => (
-                  <div key={question.content} className="flex flex-col">
+                  <div key={question.questionId} className="flex flex-col">
                     <h2>{question.content}</h2>
                     <label>
                       <input type="radio" name={question.content} value="1" />
@@ -132,7 +139,7 @@ export default function TestPage() {
                 ))
             }
 
-            <div className="" onClick={goToNextQuestion}><RightIcon className='!w-8 text-blue-900' /></div>
+            <div className="" ><RightIcon className='!w-8 text-blue-900' /></div>
           </div>
         </div>
       </div>

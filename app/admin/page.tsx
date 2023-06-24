@@ -55,10 +55,7 @@ export default function AdminHome() {
     const { name, value } = e.target;
     setEditTest(prev => ({ ...prev, [name]: value }));
   };
-  // const handleEdit = (test: any) => {
-  //   setEditTest(test);
-  //   setState(true);
-  // };
+
   const handleEdit = (test: any) => {
     setEditingTestId(test.testId);
     setEditTest({
@@ -100,10 +97,6 @@ export default function AdminHome() {
     });
   }
   
-  // const testUpdateQuery = useQuery({
-  //   queryKey: ["tests"],
-  //   queryFn: updateTest,
-  // })
   const testDeleteQuery = useQuery({
     queryKey: ["tests"],
     queryFn: deleteTest,
@@ -111,9 +104,8 @@ export default function AdminHome() {
   
   if(testsQuery.status === "loading"){return <h1 className='w-full h-screen'>Loading...</h1>}
   if(testsQuery.status === "error"){return <h1 className='w-full h-screen'>{JSON.stringify(testsQuery.error)}</h1>}
-
-
  
+  
   return (
     
     <main>
@@ -122,13 +114,13 @@ export default function AdminHome() {
       <div className=" w-full min-h-screen grid grid-cols-12 gap-24 px-40 my-12">
       {testsQuery.data.map((test: any) => (
         <div key={test.testId} className="overflow-hidden flex flex-col h-60 col-span-4 bg-gray-300 rounded-3xl">
-          <div className="" onClick={() => handleEdit(test)}><EditIcon className="ml-4 mt-0.5 !w-8 !h-8"  /></div>
+          <div className="" onClick={() => handleEdit(test)}><EditIcon className="ml-4 mt-0.5 !w-8 !h-8 hover:cursor-pointer"  /></div>
           {editingTestId === test.testId ? (
             <div className="flex flex-col items-center text-center w-full">
-              <input type="text" name="testName" value={editTest.testName} onChange={handleChange} />
-              <input type="text" name="questionAmount" value={editTest.questionAmount} onChange={handleChange} />
-              <input type="text" name="testTime" value={editTest.testTime} onChange={handleChange} />
-              <input type="text" name="testDesc" value={editTest.testDesc} onChange={handleChange} />
+              <input className='h-[39px]' type="text" name="testName" value={editTest.testName} onChange={handleChange} />
+              <input className='h-[39px] mt-1' type="text" name="questionAmount" value={editTest.questionAmount} onChange={handleChange} />
+              <input className='h-[39px] mt-1' type="text" name="testTime" value={editTest.testTime} onChange={handleChange} />
+              <input className='h-[39px] mt-1' type="text" name="testDesc" value={editTest.testDesc} onChange={handleChange} />
               {isEditing && (
                 <div className=" text-light font-semibold text-lg w-full">
                   <button className="bg-blue-500 hover:bg-blue-700 py-1 w-1/2" onClick={handleUpdate}>

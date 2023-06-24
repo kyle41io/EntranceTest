@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "../api/users"
+import { EditIcon } from '../components/Icon'
+
 
 
 
@@ -9,8 +11,8 @@ export default function UserList() {
       queryFn:getUsers,
     })
     
-    if(usersQuery.status === "loading"){return <h1 className='w-full h-screen'>Loading...</h1>}
-    if(usersQuery.status === "error"){return <h1 className='w-full h-screen'>{JSON.stringify(usersQuery.error)}</h1>}
+    if(usersQuery.status === "loading"){return <h1 className='w-full min-h-screen'>Loading...</h1>}
+    if(usersQuery.status === "error"){return <h1 className='w-full min-h-screen'>{JSON.stringify(usersQuery.error)}</h1>}
   
   return (
     
@@ -60,21 +62,25 @@ export default function UserList() {
                      {/* <div className="mt-1 text-gray-500">{user.Role}</div> */}
                     </td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                        <span className={
-                          `inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-                            user.role === 0 ? 'bg-gray-50 text-gray-700 ring-gray-600/20' :
-                            user.role === 1 ? 'bg-green-50 text-green-700 ring-green-600/20' :
-                            user.role === 2 ? 'bg-blue-50 text-blue-700 ring-blue-600/20' :
-                            'bg-red-50 text-red-700 ring-red-600/20'
-                          }`
-                        }>
-                          {user.role === 0 ? 'Tắt hoạt động' : user.role === 1 ? 'Hoạt động' : user.role === 2 ? 'Admin' : 'Không xác định'}
-                        </span>
+                        <div className="flex">
+                          <EditIcon className="!w-6 !h-6 hover:cursor-pointer  "/>
+                          <span className={
+                            `inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                              user.role === 0 ? 'bg-gray-50 text-gray-700 ring-gray-600/20' :
+                              user.role === 1 ? 'bg-green-50 text-green-700 ring-green-600/20' :
+                              user.role === 2 ? 'bg-blue-50 text-blue-700 ring-blue-600/20' :
+                              'bg-red-50 text-red-700 ring-red-600/20'
+                            }`
+                          }>
+                            {user.role === 0 ? 'Tắt hoạt động' : user.role === 1 ? 'Hoạt động' : user.role === 2 ? 'Admin' : 'Không xác định'}
+                          </span>
+                          
+                        </div>
                       </td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{user.testAmount}</td>
                     <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900 mr-4 p-3 rounded-md bg-slate-200">
-                        Chi tiết<span className="sr-only">, {user.name}</span>
+                      <a href="#" className="text-indigo-600 hover:text-indigo-900 mr-4 p-3 rounded-md bg-slate-200 hover:bg-slate-400">
+                        Chi tiết<span className="sr-only">, {user.lastName}</span>
                       </a>
                     </td>
                   </tr>
