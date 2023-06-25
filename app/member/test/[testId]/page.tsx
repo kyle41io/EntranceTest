@@ -77,7 +77,7 @@ export default function TestPage() {
   };
   
   return (
-    <main className=" w-full min-h-screen">
+    <main className=" w-full min-h-screen mb-16">
       <div className='w-full fixed top-0 h-16 bg-gray-800 flex items-center justify-between'>
         <Link href='https://kpim.vn' target='_blank'>
           <Image src={Logo} alt={'KPIM'} className='h-10 w-auto ml-[140px] mt-1.5 '  />

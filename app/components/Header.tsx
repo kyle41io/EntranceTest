@@ -1,5 +1,5 @@
 "use client"
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -11,6 +11,8 @@ function classNames(...classes: string[]) {
 }
 
 export default function Header() {
+  const [currentTab, setCurrentTab] = useState("test");
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -31,19 +33,30 @@ export default function Header() {
                   />
                 </div>
                 <div className="hidden lg:ml-6 lg:block">
-                  <div className="flex space-x-4">
-                    {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                    <a href="/member/#" className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">
-                      Trang Test
-                    </a>
-                    <a
-                      href="/member/personal"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                    >
-                      Lịch sử Test
-                    </a>
-                    
-                  </div>
+                <div className="flex space-x-4">
+                  <a
+                    href="/member/#"
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                      currentTab === "test"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                    }`}
+                    onClick={() => setCurrentTab("test")}
+                  >
+                    Trang Test
+                  </a>
+                  <a
+                    href="/member/personal"
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                      currentTab === "history"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                    }`}
+                    onClick={() => setCurrentTab("history")}
+                  >
+                    Lịch sử Test
+                  </a>
+                </div>
                 </div>
               </div>
               <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">

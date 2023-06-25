@@ -6,7 +6,7 @@ import UserList from '@/app/components/UserList'
 
 export default function UserManage() {
   return (
-    <main className=" w-full min-h-screen ">
+    <main className=" w-full min-h-screen mb-16 ">
       <AddUser />
       <UserList />
     </main>

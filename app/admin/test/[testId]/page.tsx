@@ -165,7 +165,7 @@ export default function TestPage() {
   }
   
   return (
-    <main className=" w-full min-h-screen">
+    <main className=" w-full min-h-screen mb-16">
       <div className='w-full fixed top-0 h-16 bg-gray-800 flex items-center justify-between'>
         <Link href='https://kpim.vn' target='_blank'>
           <Image src={Logo} alt={'KPIM'} className='h-10 w-auto ml-[140px] mt-1.5 '  />
@@ -199,7 +199,7 @@ export default function TestPage() {
                         <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Đáp án 2: <input className='h-[39px] w-[85%] mt-1' type="text" name="answer2" value={editQuestion.answer2} onChange={handleChange} /></label>
                         <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Đáp án 3: <input className='h-[39px] w-[85%] mt-1' type="text" name="answer3" value={editQuestion.answer3} onChange={handleChange} /></label>
                         <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Đáp án 4: <input className='h-[39px] w-[85%] mt-1' type="text" name="answer4" value={editQuestion.answer4} onChange={handleChange} /></label>
-                        <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Đáp án đúng: <input className='h-[39px] w-[50%] mt-1' type="number" min={1} max={4} name="correctAnswer" value={editQuestion.correctAnswer} onChange={handleChange} /></label>
+                        <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Đáp án đúng: <input className='h-[39px] w-[20%] mt-1' type="number" min={1} max={4} name="correctAnswer" value={editQuestion.correctAnswer} onChange={handleChange} /></label>
                         {isEditing && (
                           <div className="flex justify-around items-center text-light font-semibold text-lg w-full mt-4">
                           <button className="bg-blue-500 hover:bg-blue-700 py-1 w-1/3 rounded-lg" onClick={handleUpdate}>
@@ -233,7 +233,7 @@ export default function TestPage() {
                       {question.answer4}
                     </label>
                 </div>     
-          )}
+            )}
 
 
                        

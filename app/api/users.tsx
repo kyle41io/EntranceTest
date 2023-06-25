@@ -8,9 +8,11 @@ type NewUser = {
   email: string
   password: string
   confirmPassword: string
+  phoneNumber: string
   dateOfBirth: Date
   avatar: string
-  status: number
+  isAdmin: Boolean
+  isActive: Boolean
 }
 
 
