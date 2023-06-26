@@ -1,5 +1,4 @@
 "use client"
-import Test from '@/app/components/Test'
 import { useState, useEffect, ReactNode, Key } from 'react';
 import axios from 'axios';
 import React from 'react'
@@ -11,7 +10,6 @@ import { useQuery } from '@tanstack/react-query'
 import { getTestById } from '../../../api/tests'
 import { useParams, useSearchParams } from 'next/navigation'
 import { getQuestions, getQuestionsPaginated } from '@/app/api/questions';
-import { LeftIcon, RightIcon } from '@/app/components/Icon';
 import { Modal } from '@/app/components/Modal';
 import Timer from '@/app/components/Timer';
 
@@ -44,7 +42,6 @@ export default function TestPage() {
     queryFn:getQuestions,
   })
 
-  
   const goToPreviousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);

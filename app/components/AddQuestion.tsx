@@ -2,12 +2,17 @@ import React, { useState, useRef, FormEvent } from 'react'
 import { useMutation, useQuery  } from '@tanstack/react-query'
 import { createQuestion, getQuestions } from '../api/questions'
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useParams, useSearchParams } from 'next/navigation'
+import { getTestById } from '../api/tests';
+import axios from 'axios';
 
 interface Props {
   testId: number // thêm props để nhận giá trị của testId
 }
 
 const AddQuestion = ({ testId }: Props) => {
+  const params = useSearchParams()
+
   const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLInputElement>(null);
   const answer1Ref = useRef<HTMLInputElement>(null);
@@ -15,7 +20,7 @@ const AddQuestion = ({ testId }: Props) => {
   const answer3Ref = useRef<HTMLInputElement>(null);
   const answer4Ref = useRef<HTMLInputElement>(null);
   const correctAnswerRef = useRef<HTMLSelectElement>(null);
-
+  const param = useParams()
   const queryClient = useQueryClient()
   const [isCreate, setIsCreate] = useState(false);
 
@@ -23,6 +28,20 @@ const AddQuestion = ({ testId }: Props) => {
     queryKey: ["questions"],
     queryFn:getQuestions,
   })
+
+  const testQuery = useQuery({
+    queryKey: ['test', param.testId],
+    queryFn: () => getTestById(param.testId),
+  });
+  
+
+  const updateTestMutation = useMutation((updatedTest) => {
+    return axios.put(`https://localhost:5433/Tests/${param.testId}`, updatedTest);
+  }, {
+    onSuccess: () => {
+      testQuery.refetch();
+    },
+  });
 
   const {status ,error, mutate, } = useMutation({
     mutationFn: createQuestion,
@@ -44,7 +63,14 @@ const AddQuestion = ({ testId }: Props) => {
       correctAnswer: Number(correctAnswerRef.current!.value),
     })
       setOpen(false);
-      // questionsQuery.refetch(); // không cần gọi ở đây nữa vì đã gọi trong onSuccess
+      if (testQuery.data && testQuery.data.testAmount) {
+        const updatedTest = {
+          ...testQuery.data,
+          testAmount: testQuery.data.testAmount + 1,
+        };
+        updateTestMutation.mutate(updatedTest);
+        
+      }
     }
 
   return (

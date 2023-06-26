@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect, ReactNode, Key } from 'react';
 import axios from 'axios';
 import React from 'react'
@@ -7,7 +6,7 @@ import Logo from '../../../../public/img/logo.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import ProfilePic from '../../../../public/img/1389952697.png'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { getTestById } from '../../../api/tests'
 import { useParams, useSearchParams } from 'next/navigation'
 import { deleteQuestion, getQuestions } from '@/app/api/questions';
@@ -40,43 +39,42 @@ interface EditQuestion {
 export default function TestPage() {
   const params = useSearchParams()
   const page = parseInt(params.get("page")!)||1;
-  const [open, setOpen] = useState(false);
-  const [state, setState] = useState(false);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [deletingQuestionId, setDeletingQuestionId] = useState<Key | null>(null);
-  
-  
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const param = useParams()
+
   const testQuery = useQuery({
     queryKey: ['test', param.testId],
     queryFn: () => getTestById(param.testId),
   });
+  
   const questionsQuery = useQuery({
     queryKey: ["questions"],
-    queryFn:getQuestions,
-  })
+    queryFn: getQuestions,
+  });
   
-  const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const updateTestMutation = useMutation((updatedTest) => {
+    return axios.put(`https://localhost:5433/Tests/${param.testId}`, updatedTest);
+  }, {
+    onSuccess: () => {
+      testQuery.refetch();
+    },
+  });
 
-  
-  const handleCompleteClick = () => {
-    setShowModal(true);
-  };
-  
   const handleDeleteClick = (questionId: Key) => {
     setDeletingQuestionId(questionId);
     setShowDeleteModal(true);
   };
   
-  
   const handleConfirm = () => {
     // Xử lý sự kiện khi người dùng đồng ý nộp bài
   };
+  
   const handleDeleteConfirm = () => {
     if (deletingQuestionId) {
-      // Xử lý sự kiện khi người dùng xóa
       handleDelete(deletingQuestionId);
     }
   };
@@ -84,23 +82,30 @@ export default function TestPage() {
   const handleClose = () => {
     setShowModal(false);
   };
+  
   const handleDeleteClose = () => {
     setShowDeleteModal(false);
   };
   
-
-  function handleDelete(questionId: Key) {
+  const handleDelete = (questionId: Key) => {
     deleteQuestion(questionId)
       .then(() => {
         // Xóa question thành công, cập nhật UI hoặc thực hiện các thao tác khác
-        questionsQuery.refetch();// Làm mới danh sách các question
-        setShowDeleteModal(false);
+        questionsQuery.refetch(); // Làm mới danh sách các question
+        if (testQuery.data && testQuery.data.testAmount) {
+          const updatedTest = {
+            ...testQuery.data,
+            testAmount: testQuery.data.testAmount - 1,
+          };
+          updateTestMutation.mutate(updatedTest);
+          setShowDeleteModal(false);
+        }
       })
-      .catch(error => {
+      .catch((error) => {
         // Xóa test thất bại, xử lý lỗi tại đây
         console.error(error);
       });
-  }
+  };
   
   //edit question
   const [editQuestion, setEditQuestion] = useState<EditQuestion>({
@@ -212,35 +217,33 @@ export default function TestPage() {
                       )}
                     </div>
                   ) : (
-                <div key={question.questionId} className="flex flex-col">
-                 <h2 className='mb-5 '>
-                  <span className='font-semibold'>Câu {index + 1}:</span> {question.content} 
-                  </h2>
-                    <label className='mb-4 cursor-pointer'>
-                      <input className='mr-3 cursor-pointer w-5 h-5'  type="radio" name={question.content} value="1" />
-                      {question.answer1}
-                    </label >
-                    <label className='mb-4 cursor-pointer'>
-                      <input className='mr-3 cursor-pointer w-5 h-5' type="radio" name={question.content} value="2" />
-                      {question.answer2}
-                    </label>
-                    <label className='mb-4 cursor-pointer'>
-                      <input className='mr-3 cursor-pointer w-5 h-5' type="radio" name={question.content} value="3" />
-                      {question.answer3}
-                    </label>
-                    <label className='mb-4 cursor-pointer'>
-                      <input className='mr-3 cursor-pointer w-5 h-5' type="radio" name={question.content} value="4" />
-                      {question.answer4}
-                    </label>
-                </div>     
-            )}
-
-
-                       
+                    <div key={question.questionId} className="flex flex-col">
+                     <h2 className='mb-5 '>
+                      <span className='font-semibold'>Câu {index + 1}:</span> {question.content} 
+                      </h2>
+                        <label className='mb-4 cursor-pointer'>
+                          <input className='mr-3 cursor-pointer w-5 h-5'  type="radio" name={question.content} value="1" />
+                          {question.answer1}
+                        </label >
+                        <label className='mb-4 cursor-pointer'>
+                          <input className='mr-3 cursor-pointer w-5 h-5' type="radio" name={question.content} value="2" />
+                          {question.answer2}
+                        </label>
+                        <label className='mb-4 cursor-pointer'>
+                          <input className='mr-3 cursor-pointer w-5 h-5' type="radio" name={question.content} value="3" />
+                          {question.answer3}
+                        </label>
+                        <label className='mb-4 cursor-pointer'>
+                          <input className='mr-3 cursor-pointer w-5 h-5' type="radio" name={question.content} value="4" />
+                          {question.answer4}
+                        </label>
+                    </div>     
+                  )}
+ 
                   </div>
                   <div className="flex flex-col">
                     <div onClick={() => handleEdit(question)} className=""><EditIcon className=' ml-5 !h-8 !w-8 cursor-pointer' /></div>
-                    <div onClick={() => handleDeleteClick(question.questionId)} className="">
+                    <div onClick={() => handleDeleteClick(Number(question.questionId))} className="">
                       <TrashIcon  className='mt-6 text-red-700 ml-5 !h-8 !w-8 cursor-pointer' />
                     </div>
                   </div>
