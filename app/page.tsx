@@ -14,7 +14,7 @@ export default function Home() {
               <Image
                 className="h-10 w-auto"
                 src={Logo}
-                alt="PPIM"
+                alt="KPIM"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
                 Đăng nhập 
@@ -58,24 +58,24 @@ export default function Home() {
                   <div className="flex items-center justify-around">
                     <div className="flex items-center">
                       <input
-                        id="role"
-                        name="role"
+                        id="isAdmin"
+                        name="isAdmin"
                         type="radio"
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                       />
-                      <label htmlFor="role" className="ml-3 block text-sm leading-6 text-gray-700">
+                      <label htmlFor="isAdmin" className="ml-3 block text-sm leading-6 text-gray-700">
                         Thành viên
                       </label>
                     </div>
 
                     <div className="flex items-center">
                       <input
-                        id="role"
-                        name="role"
+                        id="isAdmin"
+                        name="isAdmin"
                         type="radio"
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                       />
-                      <label htmlFor="role" className="ml-3 block text-sm leading-6 text-gray-700">
+                      <label htmlFor="isAdmin" className="ml-3 block text-sm leading-6 text-gray-700">
                         Admin
                       </label>
                     </div>

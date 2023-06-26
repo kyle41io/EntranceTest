@@ -27,8 +27,6 @@ export default function UserList() {
     if(usersQuery.status === "error"){return <h1 className='w-full min-h-screen'>{JSON.stringify(usersQuery.error)}</h1>}
   
   //edit user
-  
-
 
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

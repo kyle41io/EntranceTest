@@ -13,7 +13,7 @@ const MotionLink = motion(Link);
 interface EditTest {
     testId: number;
     testName: string;
-    questionAmount: string;
+    testAmount: number;
     testTime: string;
     testDesc: string;
   }
@@ -46,7 +46,7 @@ export default function AdminHome() {
   const [editTest, setEditTest] = useState<EditTest>({
     testId: 0,
     testName: '',
-    questionAmount: '',
+    testAmount: 0,
     testTime: '',
     testDesc: ''
   });
@@ -91,7 +91,7 @@ export default function AdminHome() {
     setEditTest({
       testId: 0,
       testName: '',
-      questionAmount: '',
+      testAmount: 0,
       testTime: '',
       testDesc: ''
     });
@@ -118,8 +118,8 @@ export default function AdminHome() {
           {editingTestId === test.testId ? (
             <div className="flex flex-col items-center text-center w-full">
               <input className='h-[39px]' type="text" name="testName" value={editTest.testName} onChange={handleChange} />
-              <input className='h-[39px] mt-1' type="text" name="questionAmount" value={editTest.questionAmount} onChange={handleChange} />
-              <input className='h-[39px] mt-1' type="text" name="testTime" value={editTest.testTime} onChange={handleChange} />
+              <input className='h-[39px] mt-1' type="text" name="testAmount" value={editTest.testAmount} onChange={handleChange} />
+              <input className='h-[39px] mt-1' type="number" name="testTime" value={editTest.testTime} onChange={handleChange} />
               <input className='h-[39px] mt-1' type="text" name="testDesc" value={editTest.testDesc} onChange={handleChange} />
               {isEditing && (
                 <div className=" text-light font-semibold text-lg w-full">
@@ -135,8 +135,8 @@ export default function AdminHome() {
           ) : (
             <div className="flex flex-col items-center text-center justify-between w-full h-full">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">{test.testName}</h2>
-              <h3 className="mr-2">Số câu hỏi: {test.questionAmount} câu</h3>
-              <h3 className="mb-0.5">Thời gian: {test.testTime}</h3>
+              <h3 className="mr-2">Số câu hỏi: {test.testAmount} câu</h3>
+              <h3 className="mb-0.5">Thời gian: {test.testTime} phút</h3>
               <p className='mx-2'>{test.testDesc}</p>
               <div className="text-light font-semibold text-lg w-full">
                 <button className="bg-blue-500 hover:bg-blue-700 py-1.5 w-1/2">

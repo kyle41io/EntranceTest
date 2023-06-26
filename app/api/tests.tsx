@@ -16,8 +16,8 @@ export function createTest({ testName, testDesc }: { testName: string; testDesc:
     .post("https://localhost:5433/Tests", {
       testId: randomUUID,
       testName,
-      questionAmount: 0,
-      testTime: "00:05:00", 
+      testAmount: 0,
+      testTime: 5, 
       testDesc
     })
     .then (res => res.data)

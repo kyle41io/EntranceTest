@@ -13,6 +13,7 @@ import { useParams, useSearchParams } from 'next/navigation'
 import { getQuestions, getQuestionsPaginated } from '@/app/api/questions';
 import { LeftIcon, RightIcon } from '@/app/components/Icon';
 import { Modal } from '@/app/components/Modal';
+import Timer from '@/app/components/Timer';
 
 type Question = {
   questionId: Key | null | undefined;
@@ -42,12 +43,6 @@ export default function TestPage() {
     queryKey: ["questions"],
     queryFn:getQuestions,
   })
-  // //const { question } = props;
-  // const { status, error, data, isPreviousData } = useQuery({
-  //   queryKey: ["questions", { page }],
-  //   keepPreviousData: true,
-  //   queryFn: () => getQuestionsPaginated(page),
-  // })
 
   
   const goToPreviousQuestion = () => {
@@ -90,11 +85,11 @@ export default function TestPage() {
       
       <div className='flex flex-col justify-center items-center min-h-screen w-full  '>
         <div className="flex fixed right-40 top-20 bg-gray-300 text-white h-[50px] w-[150px] rounded-2xl text-xl font-semibold text-center items-center justify-center mb-12 shadow-lg">
-        {testQuery?.data?.testTime}
-        </div>
-        <div className=" min-h-[500px] w-[80%] ">
-          
-          
+        
+        <Timer seconds={testQuery.data?.testTime ? testQuery.data.testTime * 60 : 20} />
+        </div> 
+        {/* <Timer testTime={testQuery.data?.testTime} /> */}
+        <div className=" min-h-[500px] w-[80%] ">    
            
             <div className="flex flex-col justify-between items-start w-full mb-6 mt-20 p-12 bg-gray-300 shadow-lg rounded-xl">
               
@@ -132,7 +127,7 @@ export default function TestPage() {
             {showModal && <Modal onClose={handleClose} onConfirm={handleConfirm} />}
         </div>
     
-    </div>
+      </div>
     </main>
   );
 }

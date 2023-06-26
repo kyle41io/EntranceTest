@@ -27,8 +27,8 @@ export default function MemberHome() {
     {testsQuery.data?.map((test: any) => (
       <MotionLink key={test.id} href={`/member/test/${test.testId}`} className="flex flex-col items-center justify-center h-60 col-span-4 bg-gray-300 rounded-3xl">
         <h1 className='font-semibold text-2xl mb-2'>{test.testName}</h1>
-        <h3 className='my-1'>Thời gian: {test.testTime}</h3>
-        <h3 className='my-1'>Số câu hỏi: {test.questionAmount}</h3>
+        <h3 className='my-1'>Thời gian: {test.testTime} phút</h3>
+        <h3 className='my-1'>Số câu hỏi: {test.testAmount}</h3>
         <p className='text-center mx-2'>{test.testDesc}</p>
 
 
