@@ -246,6 +246,61 @@ export const TrashIcon: React.FC<IconProps> = ({className, ...rest}) => (
   </svg>
 )
 
+interface AccurateProps {
+  className?: string;
+  accurate: number;
+}
 
+export const AccuracyIcon: React.FC<AccurateProps> = ({ className, accurate, ...rest }) => {
+  const radius = 4;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference * (1 - accurate);
+  const strokeDasharray = `${circumference} ${circumference}`;
+  
+  // Tính toán màu sắc dựa trên giá trị accurate.
+  let strokeColor = "#FF0000"; // Mặc định là màu đỏ.
+  let textColor = "#FF0000"; // Mặc định là màu đỏ.
+  if (accurate === 1) {
+    strokeColor = "#00C48C"; // Màu xanh lá.
+    textColor = "#00C48C"; // Màu xanh lá.
+  } else if (accurate >= 0.8) {
+    strokeColor = "#0077FF"; // Màu xanh dương.
+    textColor = "#0077FF"; // Màu xanh dương.
+  }
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="50%"
+      height="50%"
+      viewBox="0 0 24 24"
+      {...rest}
+      className={`w-full h-auto ${className}`}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r={radius}
+        stroke={strokeColor}
+        strokeWidth="1"
+        fill="none"
+        strokeLinecap="round"
+        strokeDasharray={strokeDasharray}
+        strokeDashoffset={strokeDashoffset}
+      />
+      <text
+        x="50%"
+        y="50%"
+        dy=".4em"
+        textAnchor="middle"
+        fill={textColor}
+        fontSize="2"
+        fontWeight="bold"
+      >
+        {Math.round(accurate * 100)}%
+      </text>
+    </svg>
+  );
+};
 
 
