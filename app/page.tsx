@@ -41,6 +41,18 @@ export default function LoginPage() {
       if (loggedInUser) {
         setLoggedInUser({ email: loggedInUser.email, isAdmin: loggedInUser.isAdmin });
       }
+      const user = {
+        avatar: loggedInUser.avatar,
+        firstName: loggedInUser.firstName,
+        lastName: loggedInUser.lastName,
+        email: loggedInUser.email,
+        phoneNumber: loggedInUser.phoneNumber,
+        testAmount: loggedInUser.testAmount,
+        dateOfBirth: loggedInUser.dateOfBirth,
+        isAdmin: loggedInUser.isAdmin,
+        isActive: loggedInUser.isActive,
+      };
+      localStorage.setItem("user", JSON.stringify(user));
     } catch (error) {
       console.error(error);
     }
@@ -90,7 +102,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-around">
+            {/* <div className="flex items-center justify-around">
               <div className="flex items-center">
                 <input
                   id="isAdminFalse"
@@ -118,7 +130,7 @@ export default function LoginPage() {
                   Admin
                 </label>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button
@@ -139,7 +151,7 @@ export default function LoginPage() {
         <img
           className="absolute inset-0 h-full w-full object-cover"
           src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-          alt=""
+          alt="Picture"
         />
       </div>
     </div>

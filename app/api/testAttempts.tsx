@@ -1,16 +1,25 @@
 import axios from "axios";
 import { randomUUID } from "crypto";
 
-export function createTestAttempt({ attemptId, testId, testName, answer2, answer3, answer4, correctAnswer }: { attemptId: number; testId: number; testName: string; answer2: string; answer3: string; answer4 : string; correctAnswer: number}){
+export function createTestAttempt({ testId, testName, email, testAmount, amountCorrect, accurate }: { testId: string; testName:string ; email: string; testAmount: number; amountCorrect : number; accurate: number}){
   return axios
     .post("https://localhost:5433/api/TestAttempts", {
       attemptId: randomUUID,
       testId,
-      testName, 
-      answer2,
-      answer3,
-      answer4,
-      correctAnswer
+      testName,
+      email, 
+      timeStart: new Date(),
+      testAmount,
+      amountCorrect,
+      accurate,
+      isFinish: true,
+      applicationUser: null
     })
     .then (res => res.data)
+}
+
+export function getTestAttempts() {
+  return  axios
+  .get("https://localhost:5433/api/TestAttempts")
+  .then(res => res.data)
 }

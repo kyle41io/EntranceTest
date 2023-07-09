@@ -6,14 +6,15 @@ import Logo from '../../../../public/img/logo.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import ProfilePic from '../../../../public/img/1389952697.png'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getTestById } from '../../../api/tests'
 import { useParams, useSearchParams } from 'next/navigation'
-import { getQuestions, getQuestionsPaginated } from '@/app/api/questions';
+import { getQuestions } from '@/app/api/questions';
 import { Modal } from '@/app/components/Modal';
 import Timer from '@/app/components/Timer';
 import { isEqual } from 'lodash';
 import { AccuracyIcon } from '@/app/components/Icon';
+import { createTestAttempt, getTestAttempts } from '@/app/api/testAttempts';
 
 type Question = {
   questionId: number;
@@ -25,6 +26,16 @@ type Question = {
   answer4: ReactNode;
   correctAnswer: number; //1,2,3,4
 };
+type Attempt ={
+  attemptId: number,
+  testId: number,
+  email: string, 
+  timeStart: string,
+  testAmount: number,
+  amountCorrect: number,
+  accurate: number,
+  applicationUser: null
+}
 export default function TestPage() {
   const params = useSearchParams()
   //const [userAnswers, setUserAnswers] = useState({});
@@ -43,12 +54,26 @@ export default function TestPage() {
     queryFn:getQuestions,
   })
   
+//thêm lần tham gia test
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  
+  const queryClient = useQueryClient()
+  
+  
+  const {status ,error, mutate, } = useMutation({
+    mutationFn: createTestAttempt,
+    onSuccess: newTestAttempt => {
+      queryClient.setQueryData(["testAttempts", newTestAttempt.attemptId], newTestAttempt);
+    },
+  });
+  
+
+//thêm lần tham gia test
 
   const handleCompleteClick = () => {
     setShowModal(true);
   };
   
-
   const handleConfirm = () => {
     // tính toán điểm số của người dùng
   let score = 0;
@@ -58,9 +83,19 @@ export default function TestPage() {
     }
   });
   setScore(score);
-    setShowModal(false);
-    setIsCompleted(true); // đánh dấu là người dùng đã hoàn thành bài kiểm tra
+  setShowModal(false);
+  setIsCompleted(true); // đánh dấu là người dùng đã hoàn thành bài kiểm tra
+  
+  mutate({
+    testId: param.testId,
+    testName:testQuery.data?.testName,
+    email: user.email,
+    testAmount: testQuery.data?.testAmount,
+    amountCorrect: score,
+    accurate: score/testQuery.data?.testAmount,    
+  })
   };
+  
 
   const handleClose = () => {
     setShowModal(false);

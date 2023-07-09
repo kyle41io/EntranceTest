@@ -8,7 +8,6 @@ const AddTest = () => {
   const testNameRef = useRef<HTMLInputElement>(null);
   const testDescRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient()
-  const [isCreate, setIsCreate] = useState(false);
   const testsQuery = useQuery({
     queryKey: ["tests"],
     queryFn:getTests,
