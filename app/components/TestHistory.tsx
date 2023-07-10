@@ -38,8 +38,9 @@ const TestHistory = () => {
               <tbody className="divide-y divide-gray-200 ">
                 {testAtemptsQuery &&
                   testAtemptsQuery.data
-                    ?.filter((attempt: any) => attempt.email == user.email)
-                    .map((attempt: any, index: number) => (
+                  ?.filter((attempt: any) => attempt.email === user.email)
+                  .sort((a: any, b: any) => new Date(b.timeStart) - new Date(a.timeStart)) // sắp xếp theo thời gian giảm dần
+                  .map((attempt: any, index: number) => (
                       <tr key={user.email}>
                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                          <div className="flex items-center">

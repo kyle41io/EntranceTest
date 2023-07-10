@@ -1,9 +1,15 @@
 import axios from "axios";
 import { randomUUID } from "crypto";
 
+const accessToken = localStorage.getItem("accessToken");
+
 export function getQuestions() {
   return  axios
-  .get("https://localhost:5433/api/Questions")
+  .get("https://localhost:5433/api/Questions", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
   .then(res => res.data)
 }
 export function getQuestionsPaginated(page: number) {

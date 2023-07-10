@@ -12,11 +12,13 @@ export default function LoginPage() {
   const [loggedInUser, setLoggedInUser] = useState<{ email: string; isAdmin: boolean } | null>(null);
 
   // Định nghĩa mutation để thực hiện request đăng nhập
-  // Định nghĩa mutation để thực hiện request đăng nhập
   const { mutate, isLoading, isError } = useMutation<void, Error, { email: string; password: string; isAdmin: boolean }>(
     async (data) => {
       const response = await axios.post("https://localhost:5433/api/Accounts/SignIn", data);
+      const accessToken = response.data; // Lưu access token vào biến accessToken
+      localStorage.setItem("accessToken", accessToken); // Lưu access token vào localStorage
       return response.data;
+      
     },
     {
       onSuccess: (data) => {

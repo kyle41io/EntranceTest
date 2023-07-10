@@ -1,14 +1,24 @@
 import { randomUUID } from "crypto";
 import axios from "axios";
 
+const accessToken = localStorage.getItem("accessToken");
+
 export function getTests() {
   return  axios
-  .get("https://localhost:5433/Tests")
+  .get("https://localhost:5433/Tests", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
   .then(res => res.data)
 }
 
 export function getTestById(testId: any) {
-  return axios.get(`https://localhost:5433/Tests/${testId}`).then(res => res.data)
+  return axios.get(`https://localhost:5433/Tests/${testId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then(res => res.data)
 }
 
 export function createTest({ testName, testDesc }: { testName: string; testDesc: string;}){

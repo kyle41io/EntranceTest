@@ -76,9 +76,9 @@ export default function TestPage() {
   
   const handleConfirm = () => {
     // tính toán điểm số của người dùng
-  let score = 0;
-  questionsQuery.data?.filter((question: Question) => question.testId == Number(param.testId)).forEach((question: Question) => {
-    if (isEqual(userAnswers[question.questionId], question.correctAnswer.toString())) {
+    let score = 0;
+    questionsQuery.data?.filter((question: Question) => question.testId == Number(param.testId)).forEach((question: Question) => {
+      if (isEqual(userAnswers[question.questionId], question.correctAnswer.toString())) {
       score++;
     }
   });
