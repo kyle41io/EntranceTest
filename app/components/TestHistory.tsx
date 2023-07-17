@@ -12,7 +12,7 @@ const TestHistory = () => {
     queryFn:getTestAttempts,
   })
   return (
-    <div className='flex flex-col items-center justify-start absolute h-full w-1/2 right-40 bg-gray-300 -z-20 ml-16 p-6'>
+    <div className='flex flex-col items-center justify-start absolute w-1/2 right-40 bg-gray-300 -z-20 ml-16 p-6 overflow-y-scroll max-h-full'>
       <div className="inline-flex items-center rounded-md px-2 py-1 ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20 font-semibold text-xl">Lịch sử tham gia</div>
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
