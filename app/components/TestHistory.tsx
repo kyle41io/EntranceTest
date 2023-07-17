@@ -39,7 +39,7 @@ const TestHistory = () => {
                 {testAtemptsQuery &&
                   testAtemptsQuery.data
                   ?.filter((attempt: any) => attempt.email === user.email)
-                  .sort((a: any, b: any) => new Date(b.timeStart) - new Date(a.timeStart)) // sắp xếp theo thời gian giảm dần
+                  .sort((a: any, b: any) => Number(new Date(b.timeStart)) - Number(new Date(a.timeStart))) // sắp xếp theo thời gian giảm dần
                   .map((attempt: any, index: number) => (
                       <tr key={user.email}>
                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
