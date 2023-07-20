@@ -32,7 +32,11 @@ export function getQuestionsPaginated(page: number) {
 // } 
 
 export function deleteQuestion(questionId: any) {
-  return axios.delete(`https://localhost:5433/api/Questions/${questionId}`).then(res => res.data);
+  return axios.delete(`https://localhost:5433/api/Questions/${questionId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then(res => res.data);
 }
 export function createQuestion({ testId, content, answer1, answer2, answer3, answer4, correctAnswer }: { testId: number; content: string; answer1: string; answer2: string; answer3: string; answer4 : string; correctAnswer: number}){
   return axios
@@ -45,6 +49,10 @@ export function createQuestion({ testId, content, answer1, answer2, answer3, ans
       answer3,
       answer4,
       correctAnswer
+    }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
     .then (res => res.data)
 }

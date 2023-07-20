@@ -35,6 +35,7 @@ interface EditQuestion {
   answer1: string;
   correctAnswer: number;
 }
+const accessToken = localStorage.getItem("accessToken");
 
 export default function TestPage() {
   const params = useSearchParams()
@@ -57,7 +58,11 @@ export default function TestPage() {
   });
   
   const updateTestMutation = useMutation((updatedTest) => {
-    return axios.put(`https://localhost:5433/Tests/${param.testId}`, updatedTest);
+    return axios.put(`https://localhost:5433/Tests/${param.testId}`, updatedTest, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }, {
     onSuccess: () => {
       testQuery.refetch();
@@ -77,6 +82,7 @@ export default function TestPage() {
     if (deletingQuestionId) {
       handleDelete(deletingQuestionId);
     }
+    setShowDeleteModal(false);
   };
   
   const handleClose = () => {

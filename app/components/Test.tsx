@@ -108,7 +108,7 @@ export default function TestPage() {
             <div onClick={goToPreviousQuestion} className=""><LeftIcon className='!w-8 text-blue-900' /></div>
             {data?.questions &&
               data.questions
-                .filter((question: Question) => question.testId == param.testId)
+                .filter((question: Question) => question.testId == Number(param.testId))
                 .map((question: Question) => (
                   <div key={question.content} className="flex flex-col">
                     <h2>{question.content}</h2>

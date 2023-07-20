@@ -3,20 +3,25 @@ import { getUsers } from "../api/users"
 import { EditIcon } from '../components/Icon'
 import { useState } from "react"
 import axios from "axios";
+import TestHistoryList from "./TestHistoryList";
+import React from 'react'
+
 
 interface EditUser {
-  id: string;
+  email: string;
   isAdmin: Boolean;
   isActive: Boolean
 }
 export default function UserList() {
-  const [editingId, setEditingId] = useState(null);
+  const [editingEmail, setEditingEmail] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [editUser, setEditUser] = useState<EditUser>({
-    id: '',
+    email: '',
     isAdmin: false,
     isActive: false,
   });
+  const [showModal, setShowModal] = useState(false);
   
   const usersQuery = useQuery({
       queryKey: ["users"],
@@ -36,7 +41,7 @@ export default function UserList() {
   
 
   const handleEdit = (user: any) => {
-    setEditingId(user.id);
+    setEditingEmail(user.email);
     setEditUser({
       ...user
     });
@@ -47,8 +52,7 @@ export default function UserList() {
   const updateUser = async () => {
     try {
       usersQuery.refetch();
-
-      const res = await axios.put(`https://localhost:5433/api/AdminModUser/${editUser.id}`, editUser);
+      const res = await axios.put(`https://localhost:5433/api/AdminModUser/${editUser.email}`, editUser);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -66,17 +70,22 @@ export default function UserList() {
 
   function resetEditingState() {
     setIsEditing(false);
-    setEditingId(null);
+    setEditingEmail(null);
     setEditUser({
-      id: '',
+      email: '',
       isAdmin: false,
       isActive: false,
     });
   }
+  //modal
+  const handleShowModal = (email: any) => {
+    setSelectedUser(email);
+    setShowModal(true);
+  };
+  
 
   return (
     
-
     <div className="px-4 mt-4 sm:px-6 lg:px-8 min-h-[300px] bg-white mx-40">
       
       <div className="mt-4 flow-root mx-20">
@@ -98,7 +107,7 @@ export default function UserList() {
                     Trạng thái
                   </th>
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Số bài test tham gia
+                    Các test tham gia
                   </th>
                   
                 </tr>
@@ -122,11 +131,11 @@ export default function UserList() {
                       <div className="text-gray-900">{user.phoneNumber}</div>
                     </td>
 
-                    {editingId === user.d ? (
+                    {editingEmail === user.email ? (
                       <div className="flex flex-col items-start text-center min-w-[100px]">
                         <div className="flex">
-                          <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Admin: <input className=' mt-1' type="checkbox" name="isAdmin" value={editUser.isAdmin ? "true" : "false"} onChange={handleChange} /></label>
-                          <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Hoạt động: <input className=' mt-1' type="checkbox" min={1} max={4} name="isActive" value={editUser.isActive ? "true" : "false"} onChange={handleChange} /></label>
+                          <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Admin: <input className=' mt-1' type="checkbox" name="isAdmin" value={editUser.isAdmin ? true : false} onChange={handleChange} /></label>
+                          <label className='flex w-full h-full text-center justify-between text-base' htmlFor=""> Hoạt động: <input className=' mt-1' type="checkbox"  name="isActive" value={editUser.isActive ? true : false} onChange={handleChange} /></label>
                         </div>
                         
                         {isEditing && (
@@ -177,17 +186,42 @@ export default function UserList() {
                     </>
                   )}  
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{user.testAmount}</td>
-                    <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900 p-2 rounded-md bg-slate-200 hover:bg-slate-400">
-                        Chi tiết<span className="sr-only">, {user.lastName}</span>
-                      </a>
+                    <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-left text-sm font-medium sm:pr-0">
+                    <button
+              className="text-indigo-600 hover:text-indigo-900 p-2 rounded-md bg-slate-200 hover:bg-slate-400"
+              onClick={() => handleShowModal(user.email)}
+            >
+              Chi tiết
+            </button>
+            {showModal && selectedUser && selectedUser === user.email && (
+                      <div className="fixed z-10 inset-0 overflow-y-auto">
+                        <div className="flex items-end justify-center min-h-screen w-full pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                          <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div className="absolute inset-0 bg-gray-500 opacity-40"></div>
+                          </div>
+                          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                          <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                              
+                              <TestHistoryList email={user.email} />
+
+                            </div>
+                            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                              <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" onClick={() => setShowModal(false)}>
+                                Đóng
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     </td>
                   </tr>
-                ))}
+            ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </div>               
       </div>
     </div>
   )

@@ -10,7 +10,7 @@ const PersonalInfo = () => {
       <p className='my-4'>Họ tên: {user.firstName} {user.lastName}</p>
       <p className='my-4'>Email: {user.email}</p>
       <p className='my-4'>Số điện thoại: {user.phoneNumber}</p>
-      <p className='my-4'>Số lần test: {user.testAmount}</p>
+      {/* <p className='my-4'>Số lần test: {user.testAmount}</p> */}
       <p className='my-4'>Ngày sinh: {user.dateOfBirth}</p>
       <p className='my-4'>Quyền truy cập: {user.isAdmin ? 'Admin' : 'Thành viên'}</p> 
     </div>

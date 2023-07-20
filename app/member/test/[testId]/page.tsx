@@ -15,6 +15,8 @@ import Timer from '@/app/components/Timer';
 import { isEqual } from 'lodash';
 import { AccuracyIcon } from '@/app/components/Icon';
 import { createTestAttempt, getTestAttempts } from '@/app/api/testAttempts';
+import { getUserByEmail } from '@/app/api/users';
+const accessToken = localStorage.getItem("accessToken");
 
 type Question = {
   questionId: number;
@@ -59,6 +61,10 @@ export default function TestPage() {
   
   const queryClient = useQueryClient()
   
+  const userQuery = useQuery({
+    queryKey: ['user', user.email],
+    queryFn: () => getUserByEmail(user.email),
+  });
   
   const {status ,error, mutate, } = useMutation({
     mutationFn: createTestAttempt,
@@ -69,7 +75,17 @@ export default function TestPage() {
   
 
 //thêm lần tham gia test
-
+  const updateUserMutation = useMutation((updatedUser) => {
+    return axios.put(`https://localhost:5433/api/Accounts/${user.email}`, updatedUser, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }, {
+    onSuccess: () => {
+      userQuery.refetch();
+    },
+  });
   const handleCompleteClick = () => {
     setShowModal(true);
   };
@@ -81,19 +97,26 @@ export default function TestPage() {
       if (isEqual(userAnswers[question.questionId], question.correctAnswer.toString())) {
       score++;
     }
-  });
-  setScore(score);
-  setShowModal(false);
-  setIsCompleted(true); // đánh dấu là người dùng đã hoàn thành bài kiểm tra
+    });
+    setScore(score);
+    setShowModal(false);
+    setIsCompleted(true); // đánh dấu là người dùng đã hoàn thành bài kiểm tra
+    
+    mutate({
+      testId: param.testId,
+      testName:testQuery.data?.testName,
+      email: user.email,
+      testAmount: testQuery.data?.testAmount,
+      amountCorrect: score,
+      accurate: score/testQuery.data?.testAmount,    
+    })
   
-  mutate({
-    testId: param.testId,
-    testName:testQuery.data?.testName,
-    email: user.email,
-    testAmount: testQuery.data?.testAmount,
-    amountCorrect: score,
-    accurate: score/testQuery.data?.testAmount,    
-  })
+    const updatedUser = {
+      ...userQuery.data,
+      testAmount: userQuery.data.testAmount + 1,
+    };
+    updateUserMutation.mutate(updatedUser);  
+    
   };
   
 

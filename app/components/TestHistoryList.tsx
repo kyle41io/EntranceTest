@@ -4,17 +4,22 @@ import { useQuery } from '@tanstack/react-query'
 import {getTestAttemptsByEmail } from '../api/testAttempts'
 import { AccuracyIcon } from './Icon'
 
-const TestHistory = () => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+interface TestHistoryListProps {
+  email: string;
+}
+
+const TestHistoryList = ({ email }: TestHistoryListProps) => {
   
   const testAtemptsQuery = useQuery({
-    queryKey: ["testAttempts", user.email],
-    queryFn: () => getTestAttemptsByEmail(user.email),
+    queryKey: ["testAttempts", email],
+    queryFn: () => getTestAttemptsByEmail(email),
   })
   return (
-    <div className='flex flex-col items-center justify-start absolute w-1/2 right-40 bg-gray-300 -z-20 ml-16 p-6 overflow-y-scroll max-h-full'>
+    <>
       <div className="inline-flex items-center rounded-md px-2 py-1 ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20 font-semibold text-xl">Lịch sử tham gia</div>
-            <table className="min-w-full divide-y divide-gray-300">
+      <div className="w-full overflow-x-auto mt-4">
+        <table className="min-w-full divide-y divide-gray-300">
               <thead>
                 <tr>
                   <th scope="col" className="py-2 pl-4 text-center text-sm font-semibold text-gray-900 sm:pl-0">
@@ -38,9 +43,9 @@ const TestHistory = () => {
               <tbody className="divide-y divide-gray-200 ">
                 {testAtemptsQuery &&
                   testAtemptsQuery.data
-                  .sort((a: any, b: any) => Number(new Date(b.timeStart)) - Number(new Date(a.timeStart))) // sắp xếp theo thời gian giảm dần
+                  ?.sort((a: any, b: any) => Number(new Date(b.timeStart)) - Number(new Date(a.timeStart))) // sắp xếp theo thời gian giảm dần
                   .map((attempt: any, index: number) => (
-                      <tr key={user.email}>
+                      <tr key={email}>
                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                          <div className="flex items-center">
                            {attempt.timeStart}
@@ -57,10 +62,8 @@ const TestHistory = () => {
                          </div>
                        </td>
                        <td className="whitespace-nowrap px-3 py-5 text-semibold text-gray-500">
-                         <div className="flex items-center">
-                           
-                           {attempt.testAmount}
-                           
+                         <div className="flex items-center">                          
+                           {attempt.testAmount}                          
                          </div>
                        </td>
                         
@@ -74,8 +77,9 @@ const TestHistory = () => {
                 }
               </tbody>
             </table>
-    </div>
+        </div>
+    </>
   )
 }
 
-export default TestHistory
+export default TestHistoryList

@@ -29,6 +29,10 @@ export function createTest({ testName, testDesc }: { testName: string; testDesc:
       testAmount: 0,
       testTime: 5, 
       testDesc
+    }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
     .then (res => res.data)
 }

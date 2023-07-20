@@ -9,6 +9,7 @@ import axios from 'axios';
 interface Props {
   testId: number // thêm props để nhận giá trị của testId
 }
+const accessToken = localStorage.getItem("accessToken");
 
 const AddQuestion = ({ testId }: Props) => {
   const params = useSearchParams()
@@ -36,7 +37,11 @@ const AddQuestion = ({ testId }: Props) => {
   
 
   const updateTestMutation = useMutation((updatedTest) => {
-    return axios.put(`https://localhost:5433/Tests/${param.testId}`, updatedTest);
+    return axios.put(`https://localhost:5433/Tests/${param.testId}`, updatedTest, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }, {
     onSuccess: () => {
       testQuery.refetch();
