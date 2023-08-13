@@ -38,5 +38,9 @@ export function createTest({ testName, testDesc }: { testName: string; testDesc:
 }
 
 export function deleteTest(testId: any) {
-  return axios.delete(`https://localhost:5433/Tests/${testId}`).then(res => res.data);
+  return axios.delete(`https://localhost:5433/Tests/${testId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then(res => res.data);
 }

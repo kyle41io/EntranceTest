@@ -46,29 +46,29 @@ const TestHistoryList = ({ email }: TestHistoryListProps) => {
                   ?.sort((a: any, b: any) => Number(new Date(b.timeStart)) - Number(new Date(a.timeStart))) // sắp xếp theo thời gian giảm dần
                   .map((attempt: any, index: number) => (
                       <tr key={email}>
-                       <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                       <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm sm:pl-0">
                          <div className="flex items-center">
                            {attempt.timeStart}
                          </div>
                        </td>
-                       <td className="whitespace-nowrap px-3 py-5 text-base text-gray-500">
+                       <td className="whitespace-nowrap px-3 py-3 text-base text-gray-500">
                          <div className="text-gray-900 text-semibold">{attempt.testName}</div>
                        </td>
    
-                       <td className="whitespace-nowrap px-3 py-5 text-semibold text-gray-500">
+                       <td className="whitespace-nowrap px-3 py-3 text-semibold text-gray-500">
                          
                          <div className="flex items-center">
                            {attempt.amountCorrect}
                          </div>
                        </td>
-                       <td className="whitespace-nowrap px-3 py-5 text-semibold text-gray-500">
+                       <td className="whitespace-nowrap px-3 py-3 text-semibold text-gray-500">
                          <div className="flex items-center">                          
                            {attempt.testAmount}                          
                          </div>
                        </td>
                         
-                       <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                        <AccuracyIcon accurate={attempt.accurate}/>
+                       <td className="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                        <AccuracyIcon accurate={attempt.accurate} className='!w-28 !h-28'/>
                        </td>
                        
                      </tr>
