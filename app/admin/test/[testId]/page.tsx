@@ -144,7 +144,11 @@ export default function TestPage() {
     try {
       questionsQuery.refetch();
 
-      const res = await axios.put(`https://localhost:5433/api/Questions/${editQuestion.questionId}`, editQuestion);
+      const res = await axios.put(`https://localhost:5433/api/Questions/${editQuestion.questionId}`, editQuestion, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       return res.data;
     } catch (err) {
       console.log(err);

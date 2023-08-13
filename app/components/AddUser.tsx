@@ -16,8 +16,8 @@ export default function AddUser() {
     const phoneNumberRef = useRef<HTMLInputElement>(null);
     const dateOfBirthRef = useRef<HTMLInputElement>(null);
     const avatarRef = useRef<HTMLInputElement>(null);
-    const isAdminRef = useRef<HTMLInputElement>(null);
-    const isActiveRef = useRef<HTMLInputElement>(null);
+   // const isAdminRef = useRef<HTMLInputElement>(null);
+    //const isActiveRef = useRef<HTMLInputElement>(null);
     
     const queryClient = useQueryClient()
     const [isCreate, setIsCreate] = useState(false);
@@ -48,8 +48,8 @@ export default function AddUser() {
         phoneNumber: phoneNumberRef.current!.value,
         dateOfBirth: new Date(dateOfBirthRef.current!.value),
         avatar: avatarRef.current!.value,
-        isAdmin: Boolean(isAdminRef.current!.value),
-        isActive: Boolean(isActiveRef.current!.value),
+        isAdmin: false,
+        isActive: true,
 
       })
         setOpen(false);
@@ -102,14 +102,14 @@ export default function AddUser() {
                                         <label className="block text-gray-700 text-sm font-bold mb-2">Avatar:</label>
                                         <input type="text" name="avatar"  ref={avatarRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
-                                    <div className="mb-4">
+                                    {/* <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2">Là Admin:</label>
                                         <input type="checkbox" name="isAdmin"  ref={isAdminRef} className="shadow appearance-none border rounded py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2">Hoạt động:</label>
                                         <input type="checkbox" defaultChecked name="isActive"  ref={isActiveRef} className="shadow appearance-none border rounded py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                                    </div>
+                                    </div> */}
                                     <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Thêm</button>
                                     <button type="button" onClick={() => setOpen(false)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-6">Thoát</button>
                                 </form>

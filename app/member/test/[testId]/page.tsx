@@ -183,7 +183,7 @@ export default function TestPage() {
             {isCompleted && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-75">
                 <div className="flex flex-col justify-center items-center bg-white p-8 rounded-lg">
-                  <p className="text-xl font-semibold mb-4">Bạn đã đạt đúng {score}/{testQuery.data.testAmount} câu</p>
+                  <p className="text-xl font-semibold mb-4">Bạn đã đạt đúng {score}/{testQuery.data?.testAmount} câu</p>
                   <AccuracyIcon accurate={score/testQuery.data.testAmount} />
                   
                   <Link href="/member">

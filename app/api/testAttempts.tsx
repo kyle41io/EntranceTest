@@ -42,3 +42,11 @@ export function getTestAttemptsByEmail(email: string) {
     },
   }).then(res => res.data)
 }
+
+export function getTestAttemptsByTestId(testId: number) {
+  return axios.get(`https://localhost:5433/api/TestAttempts/test/${testId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then(res => res.data)
+}
