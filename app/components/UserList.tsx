@@ -134,13 +134,13 @@ export default function UserList() {
                     {editingEmail === user.email ? (
                       <div className="flex flex-col items-start text-center min-w-[100px]">
                         <div className="flex">
-  <label className='flex w-full h-full text-center justify-between text-base' htmlFor="">
-    Admin: <input className=' mt-1' type="checkbox" name="isAdmin" checked={editUser.isAdmin} onChange={handleChange} />
-  </label>
-  <label className='flex w-full h-full text-center justify-between text-base' htmlFor="">
-    Hoạt động: <input className=' mt-1' type="checkbox"  name="isActive" checked={editUser.isActive} onChange={handleChange} />
-  </label>
-</div>
+                          <label className='flex w-full h-full text-center justify-between text-base' htmlFor="">
+                            Admin: <input className=' mt-1' type="checkbox" name="isAdmin" checked={editUser.isAdmin} onChange={handleChange} />
+                          </label>
+                          <label className='flex w-full h-full text-center justify-between text-base' htmlFor="">
+                            Hoạt động: <input className=' mt-1' type="checkbox"  name="isActive" checked={editUser.isActive} onChange={handleChange} />
+                          </label>
+                        </div>
                         
                         {isEditing && (
                           <div className="flex items-center text-light font-semibold w-full mt-4">
